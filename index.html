@@ -8,23 +8,25 @@
 </head>
 <body>
 
-    <h2>正在观看 Twitch 直播2:</h2>
+    <h2>正在观看 Twitch 直播:</h2>
     <div id="twitch-player"></div>
 
     <script>
-        // 自动检测当前域名 (用于 Twitch parent 参数)
+        // 获取当前域名 (包含子域名)
         const currentDomain = window.location.hostname;
 
         // 获取 URL 参数中的 Twitch 频道 (默认 'twitch')
         const urlParams = new URLSearchParams(window.location.search);
         const channel = urlParams.get('channel') || 'twitch';
 
-        // 嵌入 Twitch 播放器 (不包含聊天窗口)
+        console.log("Using parent domain:", currentDomain); // Debugging log
+
+        // 嵌入 Twitch 播放器
         new Twitch.Embed("twitch-player", {
             width: "720",
             height: "480",
             channel: channel,
-            parent: [currentDomain], // 自动检测域名
+            parent: [currentDomain], // 使用完整的子域名
             autoplay: true
         });
     </script>
