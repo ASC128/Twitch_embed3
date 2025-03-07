@@ -1,27 +1,42 @@
 <?php
 // 获取 URL 参数中的 Twitch 频道名称
 $channel = isset($_GET['channel']) ? htmlspecialchars($_GET['channel']) : 'twitch';
-
-// 获取当前域名
-$parentDomain = $_SERVER['HTTP_HOST'];
+$m3u8_url = "https://usher.ttvnw.net/api/channel/hls/$channel.m3u8";
 ?>
 <!DOCTYPE html>
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitch 直播</title>
+    <title>Twitch 直播 - <?php echo $channel; ?></title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
 
     <h2>正在观看 Twitch 直播: <?php echo $channel; ?></h2>
 
-    <iframe
-        src="https://player.twitch.tv/?channel=<?php echo $channel; ?>&parent=<?php echo $parentDomain; ?>&autoplay=true&muted=false"
-        height="480"
-        width="720"
-        allowfullscreen>
-    </iframe>
+    <video id="twitch-stream" controls autoplay width="720" height="480"></video>
+
+    <script>
+        var video = document.getElementById('twitch-stream');
+        var streamUrl = "<?php echo $m3u8_url; ?>";
+
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(streamUrl);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = streamUrl;
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        } else {
+            alert("您的浏览器不支持播放 Twitch 直播流");
+        }
+    </script>
 
 </body>
 </html>
