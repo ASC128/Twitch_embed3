@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitch Stream</title>
+    <title>Custom Twitch Player</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/8.3.0/video-js.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/8.3.0/video.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,29 +18,25 @@
         h1 {
             margin-bottom: 20px;
         }
-        #twitch-embed {
-            display: flex;
-            justify-content: center;
-        }
     </style>
 </head>
 <body>
 
     <h1>Live Twitch Stream</h1>
-    <!-- Placeholder for Twitch Embed -->
-    <div id="twitch-embed"></div>
 
-    <!-- Load the Twitch embed script -->
-    <script src="https://player.twitch.tv/js/embed/v1.js"></script>
+    <!-- Custom Twitch Video Player -->
+    <video id="twitch-player" class="video-js vjs-default-skin" controls width="800" height="450">
+        <source src="https://usher.ttvnw.net/api/channel/hls/yaseminnavarro1989.m3u8" type="application/x-mpegURL">
+    </video>
 
-    <!-- Initialize the Twitch Player -->
-    <script type="text/javascript">
-        new Twitch.Player("twitch-embed", {
-            width: "80%",  // Adjust width
-            height: "500", // Adjust height
-            channel: "yaseminnavarro1989", // Change to your Twitch channel
-            //parent: ["yourgithubusername.github.io"] // Change this to your GitHub Pages URL
+    <script>
+        var player = videojs('twitch-player', {
+            autoplay: true,
+            controls: true,
+            preload: 'auto'
         });
+
+        player.play();
     </script>
 
 </body>
