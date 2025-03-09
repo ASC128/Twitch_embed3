@@ -3,38 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twitch 直播</title>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        #twitch-embed {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
-    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+    <title>Custom Twitch Player</title>
+    <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+    <script src="https://unpkg.com/video.js/dist/video.js"></script>
 </head>
 <body>
 
-    <h2>正在观看 Twitch 直播: <span id="channelName"></span></h2>
+    <h2>正在观看 Twitch 直播</h2>
 
-    <div id="twitch-embed"></div>
+    <video id="my-video" class="video-js vjs-default-skin" controls autoplay width="100%" height="80vh">
+        <source src="https://usher.ttvnw.net/api/channel/hls/maximarex08.m3u8" type="application/x-mpegURL">
+    </video>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const channel = urlParams.get('channel') || 'twitch';
-            document.getElementById("channelName").textContent = channel;
-
-            new Twitch.Embed("twitch-embed", {
-                width: "100%",
-                height: "100%",
-                channel: channel,
-                parent: [window.location.hostname] // Auto-detect parent domain
-            });
-        });
+        var player = videojs('my-video');
     </script>
 
 </body>
